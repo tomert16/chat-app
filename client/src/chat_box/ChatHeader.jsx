@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { HiChevronUp, HiChevronDown } from 'react-icons/hi';
 
-function ChatHeader({ setToggleChat, closed }) {
+function ChatHeader({ toggleChat, setToggleChat }) {
 
-    const handleCloseChat = () => {
-        setToggleChat(false)
-    }
-
-    const handleOpenChat = () => {
-        setToggleChat(true)
+    const handleChatToggle = () => {
+        setToggleChat(!toggleChat)
     }
 
 
   return (
     <Container>
-        <div className="header" >
-            {closed ? <button className="btn" onClick={handleOpenChat}>^</button> : <button className="btn" onClick={handleCloseChat}>X</button>}
-            <p>Name</p>
+        <div className="header" onClick={handleChatToggle}>
+            <p>Chat</p>
+            {toggleChat ? 
+                <button className="btn" onClick={handleChatToggle}>
+                    <HiChevronDown />
+                </button> 
+                : 
+                <button className="btn" onClick={handleChatToggle}>
+                    <HiChevronUp />
+                </button>
+            }
         </div>
     </Container>
   )
@@ -24,18 +29,24 @@ function ChatHeader({ setToggleChat, closed }) {
 
 const Container = styled.div`
     .header {
-        /* width: 92%; */
+        width: 20rem;
+        height: 2rem;
         padding: 10px;
         display: flex;
         justify-content: space-between;
         border-style: solid;
         border-color: transparent;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
         background-color: rgb(255, 205, 98);
     }
     .btn {
         height: 2rem;
-        position: relative;
-        top: 1rem;
+        background-color: transparent;
+        border-color: transparent;
+        svg{
+            font-size: 2rem;
+        }
     }
 `;
 
