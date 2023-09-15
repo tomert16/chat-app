@@ -1,17 +1,36 @@
-import './App.css'
-import ChatBox from './chat_box/ChatBox';
-import socketIO from 'socket.io-client';
+import './App.css';
+import {io} from 'socket.io-client';
 import ChatList from './chat_box/ChatList';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './Home';
 
-const socket = socketIO.connect('http://localhost:3000');
+const socket = io('http://localhost:3000/', {autoConnect: false});
+
+// catches any recieved event by the client and prints it to console
+socket.onAny((e, ...arge) => {
+  console.log(e, arge)
+});
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home socket={socket}/>
+  },
+  {
+    path: '/chat',
+    element: <ChatList socket={socket}/>
+  }
+])
 
 function App() {
 
 
   return (
     <>
-      <ChatList />
-      {/* <ChatBox /> */}
+      <div>
+        <title>Chat App</title>
+      </div>
+      <RouterProvider router={router} />
     </>
   )
 }
