@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Home({ socket }) {
+function Home({ socket, username, setUsername }) {
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,6 +36,11 @@ function Home({ socket }) {
 
 const Container = styled.div`
     .home-container {
+        /* place-content: center; */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 100%;
         height: 100vh;
         display: flex;

@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { HiChevronUp, HiChevronDown } from 'react-icons/hi';
 
-function ChatHeader({ toggleChat, setToggleChat }) {
+function ChatHeader({ toggleList, setToggleList }) {
 
-    const handleChatToggle = () => {
-        setToggleChat(!toggleChat)
+    const handleListToggle = () => {
+        setToggleList(!toggleList)
     }
 
 
   return (
     <Container>
-        <div className="header" onClick={handleChatToggle}>
+        <div className="header" onClick={handleListToggle}>
             <p>Chat</p>
-            {toggleChat ? 
-                <button className="btn" onClick={handleChatToggle}>
+            {toggleList ? 
+                <button className="btn" onClick={handleListToggle}>
                     <HiChevronDown />
                 </button> 
                 : 
-                <button className="btn" onClick={handleChatToggle}>
+                <button className="btn" onClick={handleListToggle}>
                     <HiChevronUp />
                 </button>
             }

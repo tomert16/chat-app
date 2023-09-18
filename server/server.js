@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     connectedUsers.push({
         userId: socket.id,
         username: socket.username,
+        connected: true,
     })
     io.emit('users', connectedUsers);
 
@@ -54,11 +55,28 @@ io.on('connection', (socket) => {
      socket.on('disconnect', () =>{
        console.log('disconnected', `User ${socket.id} disconnected`);
        // updates the list when a user is disconnected
-       connectedUsers = connectedUsers.filter((user) => user.userId !== socket.id)
-      //send the new list of users to the client 
-      io.emit('users', connectedUsers);
-      socket.disconnect();   
+       connectedUsers = connectedUsers.map((user) => {
+        if (user.userId === socket.id) {
+            return {
+                ...user,
+                connected: false
+            }
+        };
+        return user;
     })
+        //send the new list of users to the client 
+        io.emit('users', connectedUsers);
+        socket.disconnect();   
+     });
+
+    //private message functionality; forward the private message to the right recipient
+    socket.on('private message', ({content, to}) => {
+        //
+        socket.to(to).emit('private message', {
+            content,
+            from: socket.id,
+        });
+    });
 });
 
 

@@ -3,61 +3,69 @@ import styled from 'styled-components';
 import ChatFooter from './ChatFooter';
 import {GrClose} from 'react-icons/gr'
 
-function ChatBox({ user, socket, messages }) {
+function ChatBox({ user, socket, messages, selectedChat }) {
   const [exitChat, setExitChat] = useState(false);
   const lastMessageRef = useRef(null);
 
-  const handleExitChat = () => {
-      setExitChat(!exitChat);
-  }
+  // check if the current chat box belongs to the selected user
+  const isChatSelected = selectedChat && selectedChat.self === false && selectedChat.userId === user.userId;
 
+//   const handleExitChat = () => {
+//       setExitChat(!exitChat);
+//   }
+
+console.log(user.connected)
 //   function to automatically scroll to the bottom when a new message arrives
   useEffect(() => {
       lastMessageRef.current?.scrollIntoView( {behavior: 'smooth'} )
   }, [messages])
 
+  
+
   return (
     <Container>
-        {exitChat ? null : 
-        <div>
-            <header className="chat-header">
-                <p>{user.userName}</p>
-                <button className="exit-btn" onClick={handleExitChat}>
-                    <GrClose />
-                </button> 
-            </header>
-            <div className="chatbox-body" ref={lastMessageRef}>
-            {messages.map((message) => 
-                message.name === localStorage.getItem('userName') ? 
-                (<div className="message-chats" key={message.id}>
-                    <p className="sender-name">You</p>
-                    <div className="message-sender">
+        <>
+            {isChatSelected ? <div>
+                <header className="chat-header">
+                    <p>{user.username}</p>
+                    <button className="exit-btn" >
+                        <GrClose />
+                    </button> 
+                </header>
+                <div className="chatbox-body" ref={lastMessageRef}>
+                {messages.map((message) => 
+                    message.name === localStorage.getItem('userName') ? 
+                    (<div className="message-chats" key={message.id}>
+                        <p className="sender-name">You</p>
+                        <div className="message-sender">
+                            <p>{message.text}</p>
+                        </div>
+                    </div>) : (<div className="message-chats" key={message.id}>
+                    <p>{message.name}</p>
+                    <div className="message-recipient">
                         <p>{message.text}</p>
                     </div>
-                </div>) : (<div className="message-chats" key={message.id}>
-                 <p>{message.name}</p>
-                 <div className="message-recipient">
-                     <p>{message.text}</p>
-                 </div>
-             </div>)
-                )}
-              {/* triggered when someone is typing */}
-              <div className="message-status">
-                  <p>Someone is typing...</p>
-              </div>
-            </div>
-            <div className="chatbox-main">
-                <ChatFooter socket={socket}/>
-            </div>
-        </div >}
+                </div>)
+                    )}
+                {/* triggered when someone is typing */}
+                <div className="message-status">
+                    <p>Someone is typing...</p>
+                </div>
+                </div>
+                <div className="chatbox-main">
+                    <ChatFooter socket={socket}/>
+                </div>
+            </div> : null}
+        </>
     </Container>
   )
 }
 
 const Container = styled.div`
-    margin-left: 20rem;
+    position: absolute;
+    top:0;
+    left: 3%;
     .chat-header {
-        width: 20rem;
         height: 2rem;
         padding: 10px;
         display: flex;
@@ -78,7 +86,8 @@ const Container = styled.div`
     }
     .chatbox-body {
         border-style: solid;
-        height: 60vh;
+        height: 70vh;
+        width: 70vw;
         /* display: flex;
         flex-direction: column; */
         /* justify-content: flex-end; */

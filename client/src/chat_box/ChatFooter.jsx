@@ -4,26 +4,26 @@ import styled from 'styled-components';
 function ChatFooter({socket}) {
     const [message, setMessage] = useState("")
 
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        // checks if the text field is empty and if the username exists
-        if (message.trim() && localStorage.getItem('userName')) {
-            socket.emit('message', {
-                text: message,
-                name: localStorage.getItem('userName'),
-                id: `${socket.id}${Math.random()}`,
-                socketId: socket.id
-            });
-        };
-        setMessage("");
-    };
+    // const handleSendMessage = (e) => {
+    //     e.preventDefault();
+    //     // checks if the text field is empty and if the username exists
+    //     if (message.trim() && localStorage.getItem('userName')) {
+    //         socket.emit('message', {
+    //             text: message,
+    //             name: localStorage.getItem('userName'),
+    //             id: `${socket.id}${Math.random()}`,
+    //             socketId: socket.id
+    //         });
+    //     };
+    //     setMessage("");
+    // };
 
-    console.log(localStorage)
+    // console.log(localStorage)
 
   return (
     <Container>
         <div className="footer">
-            <form className="footer-form" onSubmit={handleSendMessage}>
+            <form className="footer-form">
                 <input 
                     type="text" 
                     className="footer-input" 
